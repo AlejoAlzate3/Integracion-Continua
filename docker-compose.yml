@@ -1,7 +1,13 @@
 version: '3.9'
 
+networks:
+  networks_supermercado:
+    driver: bridge
+
 services:
   angular_app:
+    networks:
+      - networks_supermercado
     container_name: angular_app
     image: appsuperangular:1.0.0
     build: ./angular/supermercado/
@@ -10,6 +16,8 @@ services:
     depends_on:
       - java_app
   java_app:
+    networks:
+      - networks_supermercado
     container_name: java_app
     image: appsuper:2.0
     build: .
@@ -21,8 +29,9 @@ services:
       - DATABASE_PASSWORD=root123
     depends_on:
       - java_db
-
   java_db:
+    networks:
+      - networks_supermercado
     container_name: java_db
     image: postgres:latest
     ports:
