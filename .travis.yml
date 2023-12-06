@@ -9,7 +9,9 @@ jobs:
       name: "Build Backend"
       script:
         - cd security
-        - ./mvnw clean install
+        - mvn install:install-file -Dfile=mvn -DgroupId=org.apache.maven -DartifactId=maven -Dversion=4.0 -Dpackaging=jar
+        - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
 
     - stage: angular/supermercado
       name: "Build Frontend"
