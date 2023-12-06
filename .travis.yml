@@ -2,5 +2,31 @@ language: java
 jdk:
   - openjdk17
 
-script:
-  - mvn clean install
+# Configura las fases del trabajo en Travis CI
+jobs:
+  include:
+    - stage: security
+      name: "Build Backend"
+      script:
+        - cd security
+        - ./mvnw clean install
+
+    - stage: angular/supermercado
+      name: "Build Frontend"
+      language: node_js
+      node_js:
+        - "15.2.0"
+      before_script:
+        - cd angular/supermercado
+        - npm install -g @angular/cli
+      script:
+        - npm install
+        - ng build --prod
+
+# Notifica por correo electrónico en caso de fallos
+notifications:
+  email:
+    recipients:
+      - alejoalzate1@gmail.com
+    on_success: always
+    on_failure: always
